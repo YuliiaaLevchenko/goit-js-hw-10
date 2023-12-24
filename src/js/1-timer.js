@@ -9,6 +9,7 @@ const options = {
     defaultDate: new Date(),
     minuteIncrement: 1,
     onClose(selectedDates) {
+        userSelectedDate = selectedDates[0];
       console.log(selectedDates[0]);
     },
   };
@@ -40,66 +41,47 @@ const options = {
   console.log(convertMs(140000)); // {days: 0, hours: 0, minutes: 2, seconds: 20}
   console.log(convertMs(24140000)); // {days: 0, hours: 6 minutes: 42, seconds: 20}
 
-  let countdownInterval;
+const datetimePicker = document.getElementById("datetime-picker");
+let userSelectedDate; 
 
-  function updateTimerDisplay(timeLeft) {
-    const { days, hours, minutes, seconds } = convertMs(timeLeft);
-    const formattedTime = `$
-    {addLeadingZero(days)}:$
-    {addLeadingZero(hours)}:$
-    {addLeadingZero(minutes)}:$
-    {addLeadingZero(seconds)}`;
-    
-    const startButton = document.querySelector('[data-start]');
-    if (startButton) {
-        startButton.innerText = formattedTime;}
+flatpickr(datetimePicker, {
+  ...options,
+  onClose(selectedDates) {
+    userSelectedDate = selectedDates[0]; 
+    const currentDate = new Date();
+    console.log(userSelectedDate);
+
+    if (userSelectedDate < currentDate) {
+      window.alert("Please choose a date in the future");
+    } else {
     }
-    
-  function startCountdown(targetDate) {
-    clearInterval(countdownInterval);
+  },
+});
 
-    countdownInterval = setInterval(function() {
-        const currentDate = new Date().getTime();
-        const timeLeft = targetDate - currentDate;
-    
-        if (timeLeft <= 0) {
-          clearInterval(countdownInterval);
-          updateTimerDisplay(0);
-          iziToast.success({ message: 'Countdown finished!' });
-          const startButton = document.querySelector('[data-start]');
-          if (startButton) {
-            startButton.disabled = true;
-          }
-        } else {
-          updateTimerDisplay(timeLeft);
-        }
-      }, 1000);
+const startButton = document.querySelector('[data-start]');
+let timerInterval;
+let timeDifference; 
+
+startButton.addEventListener("click", () => {
+    console.log("Current date:", new Date());
+    console.log("Time Difference:", timeDifference);
+  timeDifference = userSelectedDate - new Date();
+
+  if (timeDifference <= 0) {
+    window.alert("Please choose a future date before starting the timer.");
+    return;
+  }
+
+const timerDisplay = document.getElementById("value");
+const timerContainer = document.querySelector('.timer');
+
+  timerInterval = setInterval(() => {
+    const { days, hours, minutes, seconds } = convertMs(timeDifference);
+
+    if (timeDifference <= 0) {
+      clearInterval(timerInterval);
+    } else {
+      timeDifference -= 1000;
     }
-
-    let flatpickrInstance;
-
-    flatpickr('#datetime-picker', {
-      minDate: 'today',
-      onChange: function(selectedDates, dateStr, instance) {
-        flatpickrInstance = instance;
-        const selectedDate = selectedDates.length > 0 ? selectedDates[0] : null;
-        const currentDate = new Date();
-        const startButton = document.querySelector('[data-start]');
-      
-        if (startButton && selectedDate > currentDate) {
-          startButton.disabled = false;
-        } else if (startButton) {
-          startButton.disabled = true;
-          iziToast.error({ message: 'Please choose a date in the future' });
-        }
-      }
-    });
-    
-    document.querySelector('[data-start]').addEventListener('click', function() {
-      const selectedDate = flatpickrInstance?.selectedDates?.[0];
-      if (selectedDate) {
-        startCountdown(selectedDate.getTime());
-        this.disabled = true;
-      
-      }
-    });
+  }, 1000);
+});
