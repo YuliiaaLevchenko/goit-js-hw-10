@@ -35,6 +35,11 @@ startButton.addEventListener("click", () => {
    
   timerInterval = setInterval(() => {
     const timeDifference = datePicker.selectedDates[0] - new Date();
+
+    if (timeDifference <= 0) {
+        clearInterval(timerInterval);
+        return
+      }
     const diff = convertMs(timeDifference);
 console.log(diff);
 
@@ -42,12 +47,7 @@ daysTimer.textContent = addLeadingZero(diff.days);
 hoursTimer.textContent = addLeadingZero(diff.hours);
 minsTimer.textContent = addLeadingZero(diff.minutes);
 secsTimer.textContent = addLeadingZero(diff.seconds);
-
-
-    if (timeDifference <= 0) {
-      clearInterval(timerInterval);
-    }
-  }, 1000);
+}, 1000);
 });
 
 function addLeadingZero(value) {

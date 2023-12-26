@@ -1,7 +1,12 @@
 body {
     font-family: "Montserrat", sans-serif;
-    
+
 }
 .timer {
     display: flex;
+    gap: 24px;
+    width: 355px;
+}
+.value {
+    line-height: 48px;
 }
