@@ -21,8 +21,10 @@ document.querySelector('.form').addEventListener('submit', function (event) {
   notificationPromise
     .then((delay) => {
       iziToast.success({ message: `Fulfilled promise in ${delay}ms` });
+      this.reset();
     })
     .catch((delay) => {
       iziToast.error({ message: `Rejected promise in ${delay}ms` });
+      this.reset();
     });
 });

@@ -1,7 +1,32 @@
 body {
     font-family: "Montserrat", sans-serif;
-    
+  box-sizing: border-box;  
 }
-.timer {
+a {
+    text-decoration: none;
+}
+form {
+    display: block;
+    max-width: 360px;
+    margin: 20px auto;
+}
+label {
     display: flex;
+    margin-bottom: 10px;
 }
+input {
+    
+    box-sizing: border-box;  
+    margin-bottom: 15px; 
+}
+fieldset {
+    margin-bottom: 15px;
+}
+button {
+    background-color: #4E75FF;
+
+}
+button:hover {
+    background-color: #6C8CFF;
+}
+
