@@ -5,26 +5,30 @@ document.querySelector('.form').addEventListener('submit', function (event) {
   event.preventDefault();
   this.reset();
 
-  const delay = parseInt(this.elements['delay'].value, 10);
+  const delayInput = this.elements['delay'].value;
+  const delay = parseInt(delayInput, 10);
+  
+  
+
   const state = this.elements['state'].value;
 
   const notificationPromise = new Promise((resolve, reject) => {
     setTimeout(() => {
-      if (state === 'fulfilled') {
-        resolve(delay);
-      } else {
-        reject(delay);
-      }
-    }, delay);
-  });
+        if (state === 'fulfilled') {
+          resolve(delay);
+        } else {
+          reject(delay);
+        }
+      }, delay);
+    });
 
   notificationPromise
-    .then((delay) => {
-      iziToast.success({ message: `Fulfilled promise in ${delay}ms` });
+    .then((result) => {
+      iziToast.success({ message: `Fulfilled promise in ${result}ms` });
     
     })
-    .catch((delay) => {
-      iziToast.error({ message: `Rejected promise in ${delay}ms` });
+    .catch((result) => {
+      iziToast.error({ message: `Rejected promise in ${result}ms` });
      
-    })
+    });
 });
