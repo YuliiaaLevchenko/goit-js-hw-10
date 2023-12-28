@@ -29,11 +29,10 @@ const hoursTimer = document.querySelector('.value[data-hours]');
 const minsTimer = document.querySelector('.value[data-minutes]');
 const secsTimer = document.querySelector('.value[data-seconds]');
 
-
-
 startButton.addEventListener("click", () => {
-    if (!startButton.disabled) {
+    if (!startButton.disabled && !timerInterval) {
         startButton.disabled = true;
+        datetimePicker.setAttribute("disabled", true);
     }
 
   timerInterval = setInterval(() => {
@@ -41,6 +40,7 @@ startButton.addEventListener("click", () => {
 
     if (timeDifference <= 0) {
         clearInterval(timerInterval);
+        
         return;
       }
     const diff = convertMs(timeDifference);
@@ -82,7 +82,9 @@ function addLeadingZero(value) {
   
     if (selectedDate && selectedDate >= currentDate) {
       startButton.disabled = false;
+      datetimePicker.removeAttribute("disabled"); 
     } else {
       startButton.disabled = true;
+      datetimePicker.setAttribute("disabled", true);
     }
   }
