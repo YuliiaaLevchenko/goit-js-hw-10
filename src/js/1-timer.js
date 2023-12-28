@@ -17,10 +17,8 @@ const options = {
 
             if (selectedDates[0] < currentDate) {
               window.alert("Please choose a date in the future");
-              startButton.disabled = true;
-            } else {
-                startButton.disabled = false;
-            }
+            } 
+            updateStartButtonState();
           },
     };
 
@@ -31,14 +29,19 @@ const hoursTimer = document.querySelector('.value[data-hours]');
 const minsTimer = document.querySelector('.value[data-minutes]');
 const secsTimer = document.querySelector('.value[data-seconds]');
 
+
+
 startButton.addEventListener("click", () => {
-   
+    if (!startButton.disabled) {
+        startButton.disabled = true;
+    }
+
   timerInterval = setInterval(() => {
     const timeDifference = datePicker.selectedDates[0] - new Date();
 
     if (timeDifference <= 0) {
         clearInterval(timerInterval);
-        return
+        return;
       }
     const diff = convertMs(timeDifference);
 console.log(diff);
@@ -71,4 +74,15 @@ function addLeadingZero(value) {
     const seconds = Math.floor((((ms % day) % hour) % minute) / second);
   
     return { days, hours, minutes, seconds };
+  }
+
+  function updateStartButtonState() {
+    const currentDate = new Date();
+    const selectedDate = datePicker.selectedDates[0];
+  
+    if (selectedDate && selectedDate >= currentDate) {
+      startButton.disabled = false;
+    } else {
+      startButton.disabled = true;
+    }
   }
