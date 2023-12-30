@@ -17,8 +17,9 @@ const options = {
 
             if (selectedDates[0] < currentDate) {
               window.alert("Please choose a date in the future");
+              return;
             } 
-            updateStartButtonState();
+            startButton.disabled = false;
           },
     };
 
@@ -76,15 +77,4 @@ function addLeadingZero(value) {
     return { days, hours, minutes, seconds };
   }
 
-  function updateStartButtonState() {
-    const currentDate = new Date();
-    const selectedDate = datePicker.selectedDates[0];
   
-    if (selectedDate && selectedDate >= currentDate) {
-      startButton.disabled = false;
-      datetimePicker.removeAttribute("disabled"); 
-    } else {
-      startButton.disabled = true;
-      datetimePicker.setAttribute("disabled", true);
-    }
-  }
